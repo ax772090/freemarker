@@ -1,0 +1,118 @@
+相关网址：http://freemarker.org/docs/ref_directives.html
+
+1、 <#if request.rsp3rd.src_mcs_server_post.response.data["server"]??>    //??表示前面的server对象是否为空
+2、从json对象中获取keys数组或values数组
+{
+    "vrm.pod.az2.dc3": {
+        "ci": "FusionCompute",
+        "status": "NOK",
+        "tag": "vrm.pod.az2.dc3",
+        "tenent": "frameworkpkg"
+    },
+    "vrm.pod.az2.dc2": {
+        "ci": "FusionCompute",
+        "status": "NOK",
+        "tag": "vrm.pod.az2.dc2",
+        "tenent": "frameworkpkg"
+    }
+}
+（1）获取keys数组
+?keys：变量名后直接加?keys，示例：<#assign retData=response.data.retData?keys/>则返回值为：
+[
+ "vrm.pod.az2.dc3",
+ "vrm.pod.az2.dc2"
+]
+（2）获取values数组
+?values：变量名后直接加?values，示例：<#assign retData=response.data.retData?values/>，则返回值为：
+[
+ {
+     "ci": "FusionCompute",
+     "status": "NOK",
+     "tag": "vrm.pod.az2.dc3",
+     "tenent": "frameworkpkg"
+ },
+ {
+     "ci": "FusionCompute",
+     "status": "NOK",
+     "tag": "vrm.pod.az2.dc2",
+     "tenent": "frameworkpkg"
+ }
+]
+
+3、声明变量
+<#assign 变量名=值/>
+
+4、内置函数调用方式：使用（?内置函数名）
+例如：使字符串第一个字母大写${"freemarker"?cap_first}
+
+5、逻辑判断：if
+<#if condition>
+...
+<#elseif condition>
+...
+<#elseif condition>
+..
+<#else>
+...
+
+6、集合长度判断 
+<#if students?size != 0>
+...
+</#if>
+
+7、替换字符串replace
+${"wxfdd"?replace('d',"aa")} 这句的意思是说将字符串"wxfdd"中所有的"d"替换成"aa"
+${"wxfdd"?replace('d',"aa","规则参数")} 规则参数包含: i r m s c f
+具体含义：
+i:大小写不区分
+f:只替换第一个出现被替换字符串的字符串 
+r:aa是正则表达式
+
+8、集合的使用
+<#list aggregate.hosts as host>
+	${host}
+	<#if host_has_next>,</#if>
+</#list>
+
+9、setting指令
+语法格式：<#setting name=value>
+name的取值为：
+locale:该选项指定该模板所用的国家/语言选项 
+number_format:指定格式化输出数字的格式 
+boolean_format:指定两个布尔值的语法格式,默认值是true,false 
+date_format,time_format,datetime_format:指定格式化输出日期的格式 
+time_zone:设置格式化输出日期时所使用的时区 
+
+10、字符串连接
+{"user":"wangxing"}
+${"Hello,${user}!"} 或者 ${"Hello,"+user+"!"}  //都输出  Hello,wangxing!
+
+11、截取字符串
+${user[0]} //输出 w
+${user[1..4]} //ang
+
+12、集合连接（使用+进行连接）
+<#list ["星期一","星期二","星期三"] + ["星期四","星期五","星期六","星期天"] as x> 
+${x} 
+</#list> 
+//输出结果为：星期一 星期二 星期三 星期四 星期五 星期六 星期天 
+
+13、Map连接（使用+进行连接）
+注意：如果两个Map对象具有相同的key,则右边的值替代左边的值
+<#assign scores = {"语文":86,"数学":78} + {"数学":87,"Java":93}> 
+${scores.语文} //86
+${scores.数学} //87
+${scores.Java} //93
+
+14、空值处理
+！指定缺失变量的默认值
+??判断某个变量是否存在（存在返回true，否则返回false）
+variable!表明默认值是空字符串,长度为0的集合,或者长度为0的Map对象
+variable!defaultValue这个是指定默认值的
+
+15、变量类型转换
+	(1)数字转字符串
+	?c:即变量名后直接添加?c,如：number?c
+	(2)字符串转数字
+	?number:即变量名后直接添加 ?number
+
