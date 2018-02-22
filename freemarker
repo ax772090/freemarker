@@ -1,4 +1,5 @@
 相关网址：http://freemarker.org/docs/ref_directives.html
+webpack模块化初探：http://www.cnblogs.com/penghuwan/p/6665140.html
 
 1、 <#if request.rsp3rd.src_mcs_server_post.response.data["server"]??>    //??表示前面的server对象是否为空
 2、从json对象中获取keys数组或values数组
